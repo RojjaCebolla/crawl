@@ -382,8 +382,11 @@ class CrawlWebSocket(tornado.websocket.WebSocketHandler):
             self.process.stop()
 
     def do_login(self, username):
+        user = userdb.get_user_info(username)
+
         self.username = username
-        self.user_id, self.user_email = userdb.get_user_info(username)
+        self.user_id, self.user_email = user.id, user.email
+
         self.logger.extra["username"] = username
         if not self.init_user():
             msg = ("Could not initialize your rc and morgue!<br>" +
@@ -570,7 +573,8 @@ class CrawlWebSocket(tornado.websocket.WebSocketHandler):
             return
         error = userdb.change_email(self.user_id, email)
         if error is None:
-            self.user_id, self.user_email = userdb.get_user_info(self.username)
+            user = userdb.get_user_info(self.username)
+            self.user_id, self.user_email = self.user.id, self.user.email
             self.logger.info("User %s changed email to %s.", self.username, email if email else "null")
             self.send_message("change_email_done", email = email)
         else:
