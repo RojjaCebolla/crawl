@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>WebTiles - Dungeon Crawl Stone Soup</title>
+    <link rel="icon" href="/static/stone_soup_icon-32x32.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <style>
+      nav {
+          height: 32px;
+          background: #040204;
+          border-bottom: 2px solid #7d623c;
+          display: flex;
+          align-items: center;
+      }
+      nav > h1 {
+          font-size: 1em;
+          margin: 0;
+          font-weight: normal;
+      }
+      h2 {
+          font-size: 1.2em;
+          font-weight: normal;
+      }
+      #main, nav {
+          padding: 0 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+        <h1>DCSS Admin Panel</h1>
+        <span style="flex-grow: 1"></span>
+        <span>Hello, {{ current_user.username }}!</span>
+    </nav>
+    <div id="main">
+        <h2>Saves for user {{ user.username }}:</h2>
+        <ul>
+        {% for name, save in user_saves %}
+            <li><a href="{{ reverse_url("admin_download", save) }}">{{name}}</a>
+        {% end %}
+        </ul>
+    </div>
+  </body>
+</html>

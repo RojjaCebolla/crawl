@@ -1,5 +1,9 @@
+import subprocess
 import time
+import os
 
+import tornado.iostream
+import tornado.template
 import tornado.web
 
 import config
@@ -66,3 +70,50 @@ class AdminHandler(handler.AdminOnlyMixin, handler.RequestHandler):
             game_id.replace('dcss-', ''): config.games[game_id]['name']
             for game_id in dedup_games.values()
         }
+
+
+class DownloadHandler(handler.AdminOnlyMixin, handler.StaticFileHandler):
+    """Handler for serving crawl save files."""
+
+    def initialize(self, *args, **kwargs):
+        root = "/crawl-master/" if config.chroot else "."
+        self.root = root
+        super(DownloadHandler, self).initialize(path=root)
+
+    def get(self, path=None, include_body=True):
+        self.get_current_user()
+        self.set_header("Content-Type", "application/octet-stream")
+        self.set_header("Content-Disposition", "attachment; filename=\"crawl.cs\"")
+        super(DownloadHandler, self).get(path, include_body)
+
+
+class ViewUserHandler(handler.AdminOnlyMixin, handler.RequestHandler):
+    """Handler for user view."""
+
+    def get(self, username):
+        user = userdb.get_user_info(username)
+        if not user:
+            raise tornado.web.HTTPError(404)
+
+        user_saves = self._get_saves_for_user(user.username)
+        self.render("user.html",
+                    config=config,
+                    user=user,
+                    user_saves=user_saves)
+
+    def _get_save_dirs(self):
+        if not config.chroot:
+            return [('trunk', 'saves')]
+        crawl_base_dir = '/crawl-master'
+        return [
+            (subdir, os.path.join(crawl_base_dir, subdir, 'saves'))
+            for subdir in os.listdir(crawl_base_dir)
+            if os.path.isdir(os.path.join(crawl_base_dir, subdir, 'saves'))
+        ]
+
+    def _get_saves_for_user(self, username):
+        saves = [
+            (name, os.path.join(d, username+'.cs'))
+            for name, d in self._get_save_dirs()
+        ]
+        return [(name, save) for name, save in saves if os.path.isfile(save)]

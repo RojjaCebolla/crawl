@@ -147,6 +147,8 @@ def bind_server():
             tornado.web.URLSpec(r"/build/(.*)/rebuild", admin.RebuildHandler, {}, "rebuild"),
             tornado.web.URLSpec(r"/build/(.*)/logs", admin.TailBuildLogHandler, {}, "tail_build_logs"),
             tornado.web.URLSpec(r"/build/(.*)/", admin.BuildLogHandler, {}, "build_log"),
+            (r"/user/(.*)/", admin.ViewUserHandler),
+            tornado.web.URLSpec(r"/admin/dl/(.*)", admin.DownloadHandler, {}, "admin_download"),
             (r"/socket", CrawlWebSocket),
             (r"/gamedata/([0-9a-f]*\/.*)", GameDataHandler)
             ], gzip=getattr(config,"use_gzip",True), **settings)
