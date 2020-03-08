@@ -17,6 +17,8 @@ from ws_handler import *
 from game_data_handler import GameDataHandler
 import process_handler
 import userdb
+import admin
+import rebuild
 
 class MainHandler(handler.RequestHandler):
     def get(self):
@@ -141,6 +143,10 @@ def bind_server():
 
     application = tornado.web.Application([
             (r"/", MainHandler),
+            (r"/admin/", admin.AdminHandler),
+            tornado.web.URLSpec(r"/build/(.*)/rebuild", admin.RebuildHandler, {}, "rebuild"),
+            tornado.web.URLSpec(r"/build/(.*)/logs", admin.TailBuildLogHandler, {}, "tail_build_logs"),
+            tornado.web.URLSpec(r"/build/(.*)/", admin.BuildLogHandler, {}, "build_log"),
             (r"/socket", CrawlWebSocket),
             (r"/gamedata/([0-9a-f]*\/.*)", GameDataHandler)
             ], gzip=getattr(config,"use_gzip",True), **settings)
@@ -218,6 +224,7 @@ def check_config():
     return success
 
 if __name__ == "__main__":
+    rebuild.start()
     if chroot:
         os.chroot(chroot)
 

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Rebuild{% end %}
+{% block heading %}Rebuild{% end %}
+{% block main %}
+  <h2>Build logs:</h2>
+  <ul>
+  {% for game_id, name in rebuild_targets.items() %}
+    <li><a href="{{ reverse_url("build_log", game_id) }}" type='button'>Rebuild {{name}}</a>
+  {% end %}
+  </ul>
+{% end %}

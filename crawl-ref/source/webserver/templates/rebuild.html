@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Rebuild {{ version }}{% end %}
+{% block heading %}Rebuild {{ version }}{% end %}
+{% block main %}
+  <h2>Build logs for {{ version }}:</h2>
+  <button id=rebuild>Rebuild</button>
+  <pre></pre>
+  <script>
+    var xhr;
+    function getCookie(name) {
+      var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+      return r ? r[1] : undefined;
+    }
+    function tailBuildLog () {
+      xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (true) {
+          document.querySelector("pre").innerHTML = xhr.responseText;
+        }
+      }
+      xhr.open('GET', '{{ reverse_url("tail_build_logs", version) }}', true);
+      xhr.send();
+    }
+    document.querySelector("#rebuild").addEventListener('click', function () {
+      if (xhr)
+        xhr.abort();
+      fetch('{{ reverse_url("rebuild", version) }}', { method: 'post', 'data': {'_xsrf': getCookie('_xsrf')}});
+      tailBuildLog();
+    });
+    tailBuildLog();
+  </script>
+{% end %}
