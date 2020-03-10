@@ -205,8 +205,6 @@ class CrawlWebSocket(handler.WebSocketHandler):
             self.close()
         else:
             if config.dgl_mode:
-                if hasattr(config, "autologin") and config.autologin:
-                    self.do_login(config.autologin)
                 self.send_lobby()
             else:
                 self.start_crawl(None)
