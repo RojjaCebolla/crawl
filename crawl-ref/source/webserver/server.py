@@ -11,13 +11,14 @@ import tornado.template
 import logging, logging.handlers
 
 from config import *
+import handler
 from util import *
 from ws_handler import *
 from game_data_handler import GameDataHandler
 import process_handler
 import userdb
 
-class MainHandler(tornado.web.RequestHandler):
+class MainHandler(handler.RequestHandler):
     def get(self):
         host = self.request.host
         if self.request.protocol == "https" or self.request.headers.get("x-forwarded-proto") == "https":
@@ -37,7 +38,7 @@ class MainHandler(tornado.web.RequestHandler):
                     username = None, config = config,
                     reset_token = recovery_token, reset_token_error = recovery_token_error)
 
-class NoCacheHandler(tornado.web.StaticFileHandler):
+class NoCacheHandler(handler.StaticFileHandler):
     def set_extra_headers(self, path):
         self.set_header("Cache-Control", "no-cache, no-store, must-revalidate")
         self.set_header("Pragma", "no-cache")

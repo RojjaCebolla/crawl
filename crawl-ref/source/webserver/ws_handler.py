@@ -15,6 +15,7 @@ import zlib
 
 import config
 import checkoutput
+import handler
 import userdb
 from util import *
 
@@ -111,7 +112,7 @@ def handle_new_milestone(line):
     game = find_running_game(data.get("name"), data.get("start"))
     if game: game.log_milestone(data)
 
-class CrawlWebSocket(tornado.websocket.WebSocketHandler):
+class CrawlWebSocket(handler.WebSocketHandler):
     def __init__(self, app, req, **kwargs):
         tornado.websocket.WebSocketHandler.__init__(self, app, req, **kwargs)
         self.username = None

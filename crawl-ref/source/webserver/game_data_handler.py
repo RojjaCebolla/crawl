@@ -2,13 +2,14 @@ import tornado.web
 import os.path
 
 import config
+import handler
 
 try:
     from typing import Dict
 except:
     pass
 
-class GameDataHandler(tornado.web.StaticFileHandler):
+class GameDataHandler(handler.StaticFileHandler):
     def initialize(self):
         super(GameDataHandler, self).initialize(".")
 
