@@ -254,7 +254,7 @@ if __name__ == "__main__":
 
     if dgl_mode:
         status_file_timeout()
-        purge_login_tokens_timeout()
+        auth.purge_login_tokens_timeout()
         start_reading_milestones()
 
         if watch_socket_dirs:
