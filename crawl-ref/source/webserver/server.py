@@ -133,6 +133,7 @@ def bind_server():
         "static_path": static_path,
         "template_loader": DynamicTemplateLoader.get(template_path),
         "debug": bool(getattr(config, 'development_mode', False)),
+        "xsrf_cookies": True,
         }
 
     if hasattr(config, "no_cache") and config.no_cache:
