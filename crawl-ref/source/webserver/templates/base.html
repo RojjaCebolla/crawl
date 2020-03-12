@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>{% block title %}{% end %}</title>
+    <link rel="icon" href="/static/stone_soup_icon-32x32.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="/static/base-style.css">
+  </head>
+  <body>
+    <nav>
+      <h1>{% block heading %}{% end %}</h1>
+      <span style="flex-grow: 1"></span>
+      <span>Logged in as {{ current_user.username }}</span>
+    </nav>
+    <div id="main">
+      {% block main %}
+      {% end %}
+    </div>
+  </body>
+</html>
