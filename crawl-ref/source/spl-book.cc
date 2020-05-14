@@ -149,28 +149,22 @@ int book_rarity(book_type which_book)
     case BOOK_MINOR_MAGIC:
     case BOOK_MISFORTUNE:
     case BOOK_CANTRIPS:
-        return 1;
-
     case BOOK_CHANGES:
     case BOOK_MALEDICT:
-        return 2;
+        return 4;
 
     case BOOK_CONJURATIONS:
     case BOOK_NECROMANCY:
     case BOOK_CALLINGS:
-        return 3;
-
     case BOOK_FLAMES:
     case BOOK_FROST:
     case BOOK_AIR:
     case BOOK_GEOMANCY:
-        return 4;
+        return 5;
 
     case BOOK_YOUNG_POISONERS:
     case BOOK_BATTLE:
     case BOOK_DEBILITATION:
-        return 5;
-
     case BOOK_CLOUDS:
     case BOOK_POWER:
         return 6;
@@ -213,7 +207,7 @@ int book_rarity(book_type which_book)
         return 20;
 
     default:
-        return 1;
+        return 4;
     }
 }
 
