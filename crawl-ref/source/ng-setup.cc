@@ -219,15 +219,6 @@ static void _give_ammo(weapon_type weapon, int plus)
             newgame_make_item(OBJ_MISSILES, MI_JAVELIN, 5 + plus);
         newgame_make_item(OBJ_MISSILES, MI_THROWING_NET, 2);
         break;
-    case WPN_SHORTBOW:
-        newgame_make_item(OBJ_MISSILES, MI_ARROW, 20);
-        break;
-    case WPN_HAND_CROSSBOW:
-        newgame_make_item(OBJ_MISSILES, MI_BOLT, 20);
-        break;
-    case WPN_HUNTING_SLING:
-        newgame_make_item(OBJ_MISSILES, MI_SLING_BULLET, 20);
-        break;
     default:
         break;
     }
